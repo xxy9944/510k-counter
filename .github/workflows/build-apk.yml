@@ -5,6 +5,9 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:   # 允许在 GitHub 网页上手动点击运行
 
+permissions:
+  contents: write    # 允许把 APK 发布成 Release，手机直接下载
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,8 +32,9 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Upload APK (构建产物)
-        uses: actions/upload-artifact@v4
+      - name: Publish Release (APK 自动发布，手机直接下)
+        uses: softprops/action-gh-release@v2
         with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          tag_name: apk-latest
+          name: 510k记牌器 APK（最新构建）
+          files: build/app/outputs/flutter-apk/app-release.apk
