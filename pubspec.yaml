@@ -13,9 +13,7 @@ dependencies:
   image: ^4.2.0
   # 应用私有存储目录（存模板样图）
   path_provider: ^2.1.5
-  # 接收从系统/相册"分享"进来的截图
-  receive_sharing_intent: ^1.7.0
-  # 从相册选图 / 拍照
+  # 从相册选图 / 拍照（导入开局截图、录入牌样都用它）
   image_picker: ^1.1.2
   # 真·系统悬浮窗（盖在游戏画面上方显示计数）
   flutter_overlay_window: ^0.5.0

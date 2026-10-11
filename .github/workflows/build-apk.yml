@@ -30,6 +30,18 @@ jobs:
           git archive HEAD | tar -x -C /tmp/kkbuild/kcounter
           cd /tmp/kkbuild/kcounter
           flutter create --platforms=android .
+          # 把 compileSdk / targetSdk 提到 35，满足 flutter_plugin_android_lifecycle 的要求
+          python3 - <<'PY'
+          import pathlib
+          p = pathlib.Path('android/app/build.gradle')
+          t = p.read_text()
+          t = t.replace('compileSdk = flutter.compileSdkVersion', 'compileSdk = 35')
+          t = t.replace('targetSdk = flutter.targetSdkVersion', 'targetSdk = 35')
+          p.write_text(t)
+          print('patched build.gradle -> compileSdk/targetSdk 35')
+          PY
+          # 确保 runner 上装有 android-35 平台
+          yes | sdkmanager "platforms;android-35" || true
           cp -f overlay_manifest.xml android/app/src/main/AndroidManifest.xml
           flutter pub get
           flutter build apk --release
