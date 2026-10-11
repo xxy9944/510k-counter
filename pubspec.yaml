@@ -1,0 +1,31 @@
+name: kcounter
+description: 510k 自动记牌器（四人三副·模板匹配识别）
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # 图像处理（解码、灰度、缩放、裁剪）—— 识别引擎用
+  image: ^4.2.0
+  # 应用私有存储目录（存模板样图）
+  path_provider: ^2.1.5
+  # 接收从系统/相册"分享"进来的截图
+  receive_sharing_intent: ^1.7.0
+  # 从相册选图 / 拍照
+  image_picker: ^1.1.2
+  # 真·系统悬浮窗（盖在游戏画面上方显示计数）
+  flutter_overlay_window: ^0.5.0
+  # 悬浮窗与主 App 共享对局状态（开局识别结果、手动录入进度）
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
