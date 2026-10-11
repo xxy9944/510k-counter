@@ -21,20 +21,23 @@ jobs:
           flutter-version: '3.24.5'
           channel: 'stable'
 
-      - name: Prepare Android project (补 Gradle 脚手架 + 写入定制清单)
+      # 仓库目录名 510k-counter 不是合法的 Dart 包名（不能含连字符、不能以数字开头），
+      # flutter create 会据此报错。这里把代码导出到合法命名的 kcounter 目录再构建。
+      - name: Build APK
         run: |
+          rm -rf /tmp/kkbuild
+          mkdir -p /tmp/kkbuild/kcounter
+          git archive HEAD | tar -x -C /tmp/kkbuild/kcounter
+          cd /tmp/kkbuild/kcounter
           flutter create --platforms=android .
           cp -f overlay_manifest.xml android/app/src/main/AndroidManifest.xml
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build release APK
-        run: flutter build apk --release
+          flutter pub get
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk "$GITHUB_WORKSPACE/app-release.apk"
 
       - name: Publish Release (APK 自动发布，手机直接下)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: apk-latest
           name: 510k记牌器 APK（最新构建）
-          files: build/app/outputs/flutter-apk/app-release.apk
+          files: app-release.apk
